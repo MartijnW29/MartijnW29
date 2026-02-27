@@ -6,8 +6,7 @@
   <a href="https://github.com/MartijnW29">
     <img align="center" src="./profile/top-langs.svg" />
   </a>
-
-<br>
+<br><br>
 
 I'm a Software Developer with a strong passion for Computer Science, Security, Automation, and Game Development.
 
