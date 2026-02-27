@@ -13,15 +13,16 @@ I enjoy building systems that are not just functional, but technically interesti
 
 🚀 About Me
 
-🎓 Student It
-🔐 Interested in Information Security & Networking
-🎮 Making games
-🤖 Bot & automation developing
-🌐 Experienced with APIs, web scraping & data analysis
-🧠 I enjoy designing systems with structure and scalability
+🎓 Student IT  
+🔐 Interested in Information Security & Networking  
+🎮 Making games  
+🤖 Bot & automation developing  
+🌐 Experienced with APIs, web scraping & data analysis  
+🧠 I enjoy designing systems with structure and scalability  
 
 I love:
-Investigating how systems work internally
-Building tools
-Breaking systems (ethically 😉)
-Creating automation that saves time and reduces manual work
+
+- Investigating how systems work internally  
+- Building tools  
+- Breaking systems (ethically 😉)  
+- Creating automation that saves time and reduces manual work  
