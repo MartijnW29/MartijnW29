@@ -18,7 +18,7 @@ I enjoy building systems that are not just functional, but technically interesti
 - 🌐 Experienced with APIs, web scraping & data analysis
 - 🧠 I enjoy designing systems with structure and scalability
 
-**I love:** investigating how systems work internally · building tools · breaking systems (ethically 😉) · creating automation that saves time
+**I love:** investigating how systems work internally · building tools · creating automation that saves time
 
 ## 🛠️ Tech Stack
 
