@@ -2,11 +2,11 @@
 
 # 👋 Hi there, I'm Martijn
 
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1200&center=true&vCenter=true&width=600&lines=Software+Developer;Security+%26+Automation+Enthusiast;Game+Developer;Breaking+systems+(ethically+%F0%9F%98%89)" alt="Typing animation" />
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1200&center=true&vCenter=true&width=600&lines=Software+Developer;Security+%26+Automation+Enthusiast;Breaking+systems+(ethically+%F0%9F%98%89)" alt="Typing animation" />
 
 </div>
 
-I'm a Software Developer with a strong passion for **Computer Science**, **Security**, **Automation**, and **Game Development**.
+I'm a Software Developer with a strong passion for **Computer Science**, **Security**, and **Automation**.
 
 I enjoy building systems that are not just functional, but technically interesting. I like understanding how things work under the hood — and then pushing them further.
 
@@ -14,7 +14,6 @@ I enjoy building systems that are not just functional, but technically interesti
 
 - 🎓 IT student
 - 🔐 Interested in Information Security & Networking
-- 🎮 Making games
 - 🤖 Bot & automation development
 - 🌐 Experienced with APIs, web scraping & data analysis
 - 🧠 I enjoy designing systems with structure and scalability
