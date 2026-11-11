@@ -62,6 +62,18 @@ jobs:
           config_timezone: Europe/Amsterdam
           committer_message: "Update languages metrics"
 
+      - name: Generate isometric contribution calendar
+        uses: lowlighter/metrics@v3.34
+        with:
+          token: ${{ secrets.METRICS_TOKEN }}
+          user: ${{ github.repository_owner }}
+          filename: profile/isocalendar.svg
+          base: ""
+          plugin_isocalendar: yes
+          plugin_isocalendar_duration: full-year
+          config_timezone: Europe/Amsterdam
+          committer_message: "Update isocalendar"
+
   # Contribution snake animation (Platane/snk)
   snake:
     runs-on: ubuntu-latest

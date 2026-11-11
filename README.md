@@ -62,7 +62,7 @@ I enjoy building systems that are not just functional, but technically interesti
 <div align="center">
 
 <a href="https://github.com/MartijnW29">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=MartijnW29&theme=github-compact&hide_border=true&area=true" alt="Contribution activity graph" />
+  <img src="./profile/isocalendar.svg" alt="Isometric contribution calendar (full year)" />
 </a>
 
 <br><br>
