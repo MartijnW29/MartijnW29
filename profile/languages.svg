@@ -13,18 +13,18 @@
 <rect mask="url(#bar)" x="449.8" y="74" width="1.2" height="10" fill="#012456"/>
 <circle cx="35" cy="106" r="5" fill="#f1e05a"/>
 <text x="48" y="110" font-family="Segoe UI,Ubuntu,sans-serif" font-size="12" fill="#adbac7">JavaScript <tspan fill="#768390">65.1k lines · 58.0%</tspan></text>
-<circle cx="245" cy="106" r="5" fill="#3572A5"/>
-<text x="258" y="110" font-family="Segoe UI,Ubuntu,sans-serif" font-size="12" fill="#adbac7">Python <tspan fill="#768390">25.2k lines · 22.4%</tspan></text>
-<circle cx="35" cy="128" r="5" fill="#7355dd"/>
-<text x="48" y="132" font-family="Segoe UI,Ubuntu,sans-serif" font-size="12" fill="#adbac7">C# <tspan fill="#768390">9.6k lines · 8.6%</tspan></text>
-<circle cx="245" cy="128" r="5" fill="#663399"/>
-<text x="258" y="132" font-family="Segoe UI,Ubuntu,sans-serif" font-size="12" fill="#adbac7">CSS <tspan fill="#768390">7.6k lines · 6.8%</tspan></text>
-<circle cx="35" cy="150" r="5" fill="#e34c26"/>
-<text x="48" y="154" font-family="Segoe UI,Ubuntu,sans-serif" font-size="12" fill="#adbac7">HTML <tspan fill="#768390">3.6k lines · 3.2%</tspan></text>
-<circle cx="245" cy="150" r="5" fill="#512be4"/>
-<text x="258" y="154" font-family="Segoe UI,Ubuntu,sans-serif" font-size="12" fill="#adbac7">Razor <tspan fill="#768390">978 lines · 0.9%</tspan></text>
-<circle cx="35" cy="172" r="5" fill="#355570"/>
-<text x="48" y="176" font-family="Segoe UI,Ubuntu,sans-serif" font-size="12" fill="#adbac7">GDScript <tspan fill="#768390">98 lines · 0.1%</tspan></text>
+<circle cx="35" cy="128" r="5" fill="#3572A5"/>
+<text x="48" y="132" font-family="Segoe UI,Ubuntu,sans-serif" font-size="12" fill="#adbac7">Python <tspan fill="#768390">25.2k lines · 22.4%</tspan></text>
+<circle cx="35" cy="150" r="5" fill="#7355dd"/>
+<text x="48" y="154" font-family="Segoe UI,Ubuntu,sans-serif" font-size="12" fill="#adbac7">C# <tspan fill="#768390">9.6k lines · 8.6%</tspan></text>
+<circle cx="35" cy="172" r="5" fill="#663399"/>
+<text x="48" y="176" font-family="Segoe UI,Ubuntu,sans-serif" font-size="12" fill="#adbac7">CSS <tspan fill="#768390">7.6k lines · 6.8%</tspan></text>
+<circle cx="245" cy="106" r="5" fill="#e34c26"/>
+<text x="258" y="110" font-family="Segoe UI,Ubuntu,sans-serif" font-size="12" fill="#adbac7">HTML <tspan fill="#768390">3.6k lines · 3.2%</tspan></text>
+<circle cx="245" cy="128" r="5" fill="#512be4"/>
+<text x="258" y="132" font-family="Segoe UI,Ubuntu,sans-serif" font-size="12" fill="#adbac7">Razor <tspan fill="#768390">978 lines · 0.9%</tspan></text>
+<circle cx="245" cy="150" r="5" fill="#355570"/>
+<text x="258" y="154" font-family="Segoe UI,Ubuntu,sans-serif" font-size="12" fill="#adbac7">GDScript <tspan fill="#768390">98 lines · 0.1%</tspan></text>
 <circle cx="245" cy="172" r="5" fill="#012456"/>
 <text x="258" y="176" font-family="Segoe UI,Ubuntu,sans-serif" font-size="12" fill="#adbac7">PowerShell <tspan fill="#768390">54 lines · 0.0%</tspan></text>
 </svg>
