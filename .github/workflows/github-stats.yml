@@ -39,32 +39,61 @@ jobs:
           git commit -m "Update stats cards" || exit 0
           git push
 
-  # Language analysis (lowlighter/metrics): aggregates GitHub's linguist
-  # byte counts across all repos (private included) per language
+  # Lines of code per language: shallow-clone every owned repo (private
+  # included) and count real code lines with cloc
   languages:
     runs-on: ubuntu-latest
     needs: cards
     permissions:
       contents: write
     steps:
-      - name: Generate languages metrics
-        uses: lowlighter/metrics@v3.34
-        with:
-          token: ${{ secrets.METRICS_TOKEN }}
-          user: ${{ github.repository_owner }}
-          commits_authoring: MartijnW29, weningmartijn@gmail.com
-          filename: profile/languages.svg
-          base: ""
-          plugin_languages: yes
-          plugin_languages_indepth: yes
-          plugin_languages_sections: most-used
-          plugin_languages_details: lines, percentage
-          plugin_languages_limit: 8
-          plugin_languages_analysis_timeout: 30
-          plugin_languages_analysis_timeout_repositories: 20
-          plugin_languages_colors: github
-          config_timezone: Europe/Amsterdam
-          committer_message: "Update languages metrics"
+      - uses: actions/checkout@v6
+
+      - name: Install cloc
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq cloc jq
+
+      - name: Count lines of code across all repositories
+        env:
+          GH_TOKEN: ${{ secrets.METRICS_TOKEN }}
+        run: |
+          set -u
+          mkdir -p /tmp/repos /tmp/cloc
+          gh api "user/repos?affiliation=owner&per_page=100" --paginate \
+            --jq '.[] | select(.fork | not) | .full_name' > /tmp/repolist.txt
+          while read -r full; do
+            name="${full#*/}"
+            echo "::group::$name"
+            if git clone --depth 1 --quiet \
+                "https://x-access-token:${GH_TOKEN}@github.com/${full}.git" \
+                "/tmp/repos/$name"; then
+              cloc --vcs=git --json --quiet \
+                --exclude-dir=node_modules,vendor,dist,build,out,obj,bin,Debug,Release,venv,.venv,env,__pycache__,packages,wwwroot/lib,migrations,Migrations \
+                "/tmp/repos/$name" > "/tmp/cloc/$name.json" || true
+              jq empty "/tmp/cloc/$name.json" 2>/dev/null || echo '{}' > "/tmp/cloc/$name.json"
+              rm -rf "/tmp/repos/$name"
+            else
+              echo "clone failed, skipping"
+            fi
+            echo "::endgroup::"
+          done < /tmp/repolist.txt
+          jq -s 'map(to_entries | map(select(.key != "header" and .key != "SUM"))
+                     | map({(.key): .value.code}) | add // {})
+                 | reduce .[] as $m ({}; reduce ($m | to_entries[]) as $e
+                     (.; .[$e.key] = ((.[$e.key] // 0) + $e.value)))' \
+            /tmp/cloc/*.json > /tmp/merged.json
+          echo "Merged totals:" && cat /tmp/merged.json
+
+      - name: Build languages card
+        run: python3 scripts/build_languages_card.py /tmp/merged.json profile/languages.svg
+
+      - name: Commit languages card
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add profile/languages.svg
+          git commit -m "Update languages card" || exit 0
+          git pull --rebase
+          git push
 
       - name: Generate isometric contribution calendar
         uses: lowlighter/metrics@v3.34
