@@ -52,27 +52,50 @@ jobs:
       - name: Install cloc
         run: sudo apt-get update -qq && sudo apt-get install -y -qq cloc jq
 
-      - name: Count lines of code across all repositories
+      - name: Count lines of code and detect tools across all repositories
         env:
           GH_TOKEN: ${{ secrets.METRICS_TOKEN }}
+          GIT_TERMINAL_PROMPT: "0"
         run: |
           set -u
           mkdir -p /tmp/repos /tmp/cloc
+          : > /tmp/tools.txt
           gh api "user/repos?affiliation=owner&per_page=100" --paginate \
             --jq '.[] | select(.fork | not) | .full_name' > /tmp/repolist.txt
           while read -r full; do
             name="${full#*/}"
+            d="/tmp/repos/$name"
             echo "::group::$name"
-            if git clone --depth 1 --quiet \
-                "https://x-access-token:${GH_TOKEN}@github.com/${full}.git" \
-                "/tmp/repos/$name"; then
+            # blob filter skips files over 200 kB (media, binaries) so big
+            # repos clone fast; a hard timeout keeps one repo from hanging
+            if timeout 300 git clone --depth 1 --filter=blob:limit=200k --quiet \
+                "https://x-access-token:${GH_TOKEN}@github.com/${full}.git" "$d"; then
               cloc --vcs=git --json --quiet \
                 --exclude-dir=node_modules,vendor,dist,build,out,obj,bin,Debug,Release,venv,.venv,env,__pycache__,packages,wwwroot/lib,migrations,Migrations \
-                "/tmp/repos/$name" > "/tmp/cloc/$name.json" || true
+                "$d" > "/tmp/cloc/$name.json" || true
               jq empty "/tmp/cloc/$name.json" 2>/dev/null || echo '{}' > "/tmp/cloc/$name.json"
-              rm -rf "/tmp/repos/$name"
+              # tool fingerprints (one line per tool per repo)
+              [ -n "$(find "$d" -name project.godot -print -quit)" ] && echo godot >> /tmp/tools.txt
+              csproj=$(find "$d" -name '*.csproj' -print -quit)
+              if [ -n "$csproj" ]; then
+                echo dotnet >> /tmp/tools.txt
+                grep -qi '<UseMaui>true' "$csproj" && echo maui >> /tmp/tools.txt
+              fi
+              [ -n "$(find "$d" -name package.json -not -path '*/node_modules/*' -print -quit)" ] && echo nodejs >> /tmp/tools.txt
+              [ -n "$(find "$d" -iname 'dockerfile' -o -name 'docker-compose*.yml' | head -1)" ] && echo docker >> /tmp/tools.txt
+              [ -d "$d/.github/workflows" ] && [ "$name" != "${{ github.event.repository.name }}" ] && echo actions >> /tmp/tools.txt
+              [ -n "$(find "$d" -name ProjectVersion.txt -path '*ProjectSettings*' -print -quit)" ] && echo unity >> /tmp/tools.txt
+              deps=$(find "$d" \( -name 'requirements*.txt' -o -name pyproject.toml -o -name Pipfile \) -not -path '*/node_modules/*' -exec cat {} + 2>/dev/null)
+              pkgs=$(find "$d" -name package.json -not -path '*/node_modules/*' -exec cat {} + 2>/dev/null)
+              for kw in django flask torch opencv pandas numpy streamlit selenium scikit-learn discord; do
+                echo "$deps" | grep -qi "$kw" && echo "$kw" >> /tmp/tools.txt
+              done
+              for kw in react express electron discord; do
+                echo "$pkgs" | grep -qi "\"$kw" && echo "$kw" >> /tmp/tools.txt
+              done
+              rm -rf "$d"
             else
-              echo "clone failed, skipping"
+              echo "clone failed or timed out, skipping"
             fi
             echo "::endgroup::"
           done < /tmp/repolist.txt
@@ -82,16 +105,19 @@ jobs:
                      (.; .[$e.key] = ((.[$e.key] // 0) + $e.value)))' \
             /tmp/cloc/*.json > /tmp/merged.json
           echo "Merged totals:" && cat /tmp/merged.json
+          echo "Detected tools:" && sort /tmp/tools.txt | uniq -c | sort -rn
 
-      - name: Build languages card
-        run: python3 scripts/build_languages_card.py /tmp/merged.json profile/languages.svg
+      - name: Build languages card and tech stack
+        run: |
+          python3 scripts/build_languages_card.py /tmp/merged.json profile/languages.svg
+          python3 scripts/build_tech_stack.py /tmp/merged.json /tmp/tools.txt README.md
 
-      - name: Commit languages card
+      - name: Commit languages card and tech stack
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add profile/languages.svg
-          git commit -m "Update languages card" || exit 0
+          git add profile/languages.svg README.md
+          git commit -m "Update languages card and tech stack" || exit 0
           git pull --rebase
           git push
 

@@ -59,7 +59,7 @@ def fmt(n: int) -> str:
 
 
 def main() -> None:
-    raw = json.loads(open(sys.argv[1], encoding="utf-8").read())
+    raw = json.loads(open(sys.argv[1], encoding="utf-8-sig").read())
 
     merged: dict[str, int] = {}
     colors: dict[str, str] = {}
