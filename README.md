@@ -75,14 +75,3 @@ I enjoy building systems that are not just functional, but technically interesti
 
 </div>
 
-## 📌 Featured Projects
-
-| Project | Description | Tech |
-|---|---|---|
-| [Unbotling](https://github.com/MartijnW29/Unbotling) | Bot detection & automation research | Python |
-| [VICTUZ study association app](https://github.com/MartijnW29/VICTUZ-studievereniging-app) | Full app for study association VICTUZ | C# |
-| [SnapTime](https://github.com/MartijnW29/SnapTime) | Photo app | C# |
-| [Tom-Armoede-Heerlen](https://github.com/MartijnW29/Tom-Armoede-Heerlen) | Website project tackling poverty in Heerlen | JavaScript |
-| [Genshin Clicker](https://github.com/MartijnW29/genshin-clicker) | Browser clicker game | JavaScript |
-
-*…and a lot more happening in private repos: automated content pipelines, Discord game bots, trading tools & more.*
