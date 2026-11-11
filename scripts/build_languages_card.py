@@ -119,9 +119,11 @@ def main() -> None:
         )
         x += w
 
+    # fill column by column, like the top languages card: ranks 1-4 go
+    # down the left column, 5-8 down the right one
     for i, (name, lines) in enumerate(ranked):
-        cx = 30 + (i % 2) * col_w
-        cy = top + (i // 2) * row_h
+        cx = 30 + (i // rows) * col_w
+        cy = top + (i % rows) * row_h
         pct = 100 * lines / total
         parts.append(f'<circle cx="{cx + 5}" cy="{cy - 4}" r="5" fill="{colors[name]}"/>')
         parts.append(
