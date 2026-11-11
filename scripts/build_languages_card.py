@@ -13,7 +13,7 @@ LANGUAGES = {
     "Python": "#3572A5",
     "JavaScript": "#f1e05a",
     "TypeScript": "#3178c6",
-    "C#": "#178600",
+    "C#": "#7355dd",
     "HTML": "#e34c26",
     "CSS": "#663399",
     "SCSS": "#c6538c",
