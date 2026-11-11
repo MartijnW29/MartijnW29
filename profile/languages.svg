@@ -1,21 +1,21 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="480" height="216" viewBox="0 0 480 216" role="img" aria-label="Lines of code per language">
 <rect width="480" height="216" rx="4.5" fill="#22272e"/>
 <text x="30" y="37" font-family="Segoe UI,Ubuntu,sans-serif" font-size="18" font-weight="600" fill="#539bf5">Lines of Code per Language</text>
-<text x="30" y="60" font-family="Segoe UI,Ubuntu,sans-serif" font-size="12" fill="#768390">112.4k lines across all repositories (private included)</text>
+<text x="30" y="60" font-family="Segoe UI,Ubuntu,sans-serif" font-size="12" fill="#768390">112.3k lines across all repositories (private included)</text>
 <mask id="bar"><rect x="30" y="74" width="420" height="10" rx="5" fill="#fff"/></mask>
-<rect mask="url(#bar)" x="30.0" y="74" width="244.3" height="10" fill="#f1e05a"/>
-<rect mask="url(#bar)" x="273.3" y="74" width="95.4" height="10" fill="#3572A5"/>
-<rect mask="url(#bar)" x="367.6" y="74" width="37.0" height="10" fill="#178600"/>
-<rect mask="url(#bar)" x="403.6" y="74" width="29.5" height="10" fill="#663399"/>
+<rect mask="url(#bar)" x="30.0" y="74" width="244.4" height="10" fill="#f1e05a"/>
+<rect mask="url(#bar)" x="273.4" y="74" width="95.2" height="10" fill="#3572A5"/>
+<rect mask="url(#bar)" x="367.6" y="74" width="37.0" height="10" fill="#7355dd"/>
+<rect mask="url(#bar)" x="403.6" y="74" width="29.6" height="10" fill="#663399"/>
 <rect mask="url(#bar)" x="432.1" y="74" width="14.6" height="10" fill="#e34c26"/>
 <rect mask="url(#bar)" x="445.8" y="74" width="4.7" height="10" fill="#512be4"/>
 <rect mask="url(#bar)" x="449.4" y="74" width="1.4" height="10" fill="#355570"/>
 <rect mask="url(#bar)" x="449.8" y="74" width="1.2" height="10" fill="#012456"/>
 <circle cx="35" cy="106" r="5" fill="#f1e05a"/>
-<text x="48" y="110" font-family="Segoe UI,Ubuntu,sans-serif" font-size="12" fill="#adbac7">JavaScript <tspan fill="#768390">65.1k lines · 57.9%</tspan></text>
+<text x="48" y="110" font-family="Segoe UI,Ubuntu,sans-serif" font-size="12" fill="#adbac7">JavaScript <tspan fill="#768390">65.1k lines · 58.0%</tspan></text>
 <circle cx="245" cy="106" r="5" fill="#3572A5"/>
-<text x="258" y="110" font-family="Segoe UI,Ubuntu,sans-serif" font-size="12" fill="#adbac7">Python <tspan fill="#768390">25.3k lines · 22.5%</tspan></text>
-<circle cx="35" cy="128" r="5" fill="#178600"/>
+<text x="258" y="110" font-family="Segoe UI,Ubuntu,sans-serif" font-size="12" fill="#adbac7">Python <tspan fill="#768390">25.2k lines · 22.4%</tspan></text>
+<circle cx="35" cy="128" r="5" fill="#7355dd"/>
 <text x="48" y="132" font-family="Segoe UI,Ubuntu,sans-serif" font-size="12" fill="#adbac7">C# <tspan fill="#768390">9.6k lines · 8.6%</tspan></text>
 <circle cx="245" cy="128" r="5" fill="#663399"/>
 <text x="258" y="132" font-family="Segoe UI,Ubuntu,sans-serif" font-size="12" fill="#adbac7">CSS <tspan fill="#768390">7.6k lines · 6.8%</tspan></text>
