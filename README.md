@@ -2,7 +2,7 @@
 
 # 👋 Hi there, I'm Martijn
 
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1200&center=true&vCenter=true&width=600&lines=Software+Developer;Security+%26+Automation+Enthusiast;Breaking+systems+(ethically+%F0%9F%98%89)" alt="Typing animation" />
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1200&center=true&vCenter=true&width=600&lines=Computer+Science;Security;Automation" alt="Typing animation" />
 
 </div>
 
