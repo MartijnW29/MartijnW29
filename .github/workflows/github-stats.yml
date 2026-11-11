@@ -52,6 +52,7 @@ jobs:
         with:
           token: ${{ secrets.METRICS_TOKEN }}
           user: ${{ github.repository_owner }}
+          commits_authoring: MartijnW29, weningmartijn@gmail.com
           filename: profile/languages.svg
           base: ""
           plugin_languages: yes
