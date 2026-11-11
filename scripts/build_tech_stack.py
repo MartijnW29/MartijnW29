@@ -38,6 +38,20 @@ LANG_BADGES = {
     "SQL": ("SQL", "E38C00", "mysql", "white"),
 }
 MERGE = {"Bourne Again Shell": "Bourne Shell"}
+# tokei JSON uses enum variant names; normalize them first
+TOKEI_NAMES = {
+    "CSharp": "C#",
+    "Html": "HTML",
+    "Css": "CSS",
+    "Scss": "SCSS",
+    "Sh": "Bourne Shell",
+    "Bash": "Bourne Shell",
+    "GdScript": "GDScript",
+    "Sql": "SQL",
+    "Cpp": "C++",
+    "Php": "PHP",
+    "Tsx": "TypeScript",
+}
 
 TOOL_BADGES = {
     "dotnet": (".NET", "512BD4", "dotnet", "white"),
@@ -85,6 +99,7 @@ def main() -> None:
     raw = json.loads(open(sys.argv[1], encoding="utf-8-sig").read())
     langs: dict[str, int] = {}
     for lang, lines in raw.items():
+        lang = TOKEI_NAMES.get(lang, lang)
         lang = MERGE.get(lang, lang)
         if lang in LANG_BADGES and lines > 0:
             langs[lang] = langs.get(lang, 0) + lines

@@ -44,6 +44,23 @@ DISPLAY_NAMES = {
     "C/C++ Header": "C",
     "JSX": "JavaScript",
 }
+# tokei JSON uses enum variant names; normalize them first
+TOKEI_NAMES = {
+    "CSharp": "C#",
+    "Html": "HTML",
+    "Css": "CSS",
+    "Scss": "SCSS",
+    "Sh": "Bourne Shell",
+    "Bash": "Bourne Shell",
+    "GdScript": "GDScript",
+    "Sql": "SQL",
+    "Cpp": "C++",
+    "CHeader": "C",
+    "CppHeader": "C++",
+    "Php": "PHP",
+    "Jsx": "JSX",
+    "Tsx": "TypeScript",
+}
 LIMIT = 8
 
 # github_dark_dimmed palette, matching the other cards
@@ -64,6 +81,7 @@ def main() -> None:
     merged: dict[str, int] = {}
     colors: dict[str, str] = {}
     for lang, lines in raw.items():
+        lang = TOKEI_NAMES.get(lang, lang)
         if lang not in LANGUAGES or lines <= 0:
             continue
         name = DISPLAY_NAMES.get(lang, lang)

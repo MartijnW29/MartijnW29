@@ -50,16 +50,15 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Install cloc
-        # Pinned release from the official AlDanial/cloc repo, verified by
-        # checksum; avoids apt, whose mirrors are unreliable on runners
+      - name: Install tokei
+        # Pinned static binary from the official XAMPPRocky/tokei repo,
+        # verified by checksum; no apt and no runtime dependencies
         run: |
-          curl -fsSL --retry 5 --retry-delay 10 \
-            -o /usr/local/bin/cloc \
-            https://github.com/AlDanial/cloc/releases/download/v2.06/cloc-2.06.pl
-          echo "ed9fbdd081a2ceb933ea490b3c1cfacc87d3898ae2650d0d6756439695a836c8  /usr/local/bin/cloc" | sha256sum -c -
-          chmod +x /usr/local/bin/cloc
-          cloc --version
+          curl -fsSL --retry 5 --retry-delay 10 -o /tmp/tokei.tar.gz \
+            https://github.com/XAMPPRocky/tokei/releases/download/v12.1.2/tokei-x86_64-unknown-linux-gnu.tar.gz
+          echo "c8c5c4ab9e1ff47e745de70f4af3214078657399fa7a0da0b5f209d780e49978  /tmp/tokei.tar.gz" | sha256sum -c -
+          sudo tar -xzf /tmp/tokei.tar.gz -C /usr/local/bin tokei
+          tokei --version
 
       - name: Count lines of code and detect tools across all repositories
         env:
@@ -82,8 +81,10 @@ jobs:
             # 30-minute timeout per repo so nothing is skipped needlessly
             if timeout 1800 git clone --depth 1 --filter=blob:limit=1m --quiet \
                 "https://x-access-token:${GH_TOKEN}@github.com/${full}.git" "$d"; then
-              cloc --vcs=git --json --quiet \
-                --exclude-dir=node_modules,vendor,dist,build,out,obj,bin,Debug,Release,venv,.venv,env,__pycache__,packages,wwwroot/lib,migrations,Migrations \
+              tokei --output json \
+                -e node_modules -e vendor -e dist -e build -e out -e obj -e bin \
+                -e Debug -e Release -e venv -e .venv -e __pycache__ -e packages \
+                -e migrations -e Migrations -e "wwwroot/lib" \
                 "$d" > "/tmp/cloc/$name.json" || true
               jq empty "/tmp/cloc/$name.json" 2>/dev/null || echo '{}' > "/tmp/cloc/$name.json"
               # tool fingerprints (one line per tool per repo)
@@ -117,7 +118,7 @@ jobs:
           xargs -a /tmp/repolist.txt -P 4 -I{} bash -c 'process_repo "$@"' _ {}
 
           cat /tmp/tools/*.txt > /tmp/tools.txt
-          jq -s 'map(to_entries | map(select(.key != "header" and .key != "SUM"))
+          jq -s 'map(to_entries | map(select(.key != "Total"))
                      | map({(.key): .value.code}) | add // {})
                  | reduce .[] as $m ({}; reduce ($m | to_entries[]) as $e
                      (.; .[$e.key] = ((.[$e.key] // 0) + $e.value)))' \
