@@ -51,7 +51,13 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Install cloc
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq cloc jq
+        run: |
+          for i in 1 2 3 4 5; do
+            sudo apt-get update -qq && sudo apt-get install -y -qq cloc jq && break
+            echo "apt attempt $i failed, retrying in 30s..."
+            sleep 30
+          done
+          command -v cloc
 
       - name: Count lines of code and detect tools across all repositories
         env:
