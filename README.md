@@ -22,16 +22,10 @@ I enjoy building systems that are not just functional, but technically interesti
 
 ## 🛠️ Tech Stack
 
-> Detected automatically from my repositories — languages with real percentages, tools found in my projects.
+> Detected automatically from my repositories.
 
 <!-- TECH:START -->
 <div align="center">
-
-![JavaScript 58%](https://img.shields.io/badge/JavaScript-58%25-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black&labelColor=2d333b)
-![Python 23%](https://img.shields.io/badge/Python-23%25-3776AB?style=for-the-badge&logo=python&logoColor=white&labelColor=2d333b)
-![C# 9%](https://img.shields.io/badge/C%23-9%25-512BD4?style=for-the-badge&logo=dotnet&logoColor=white&labelColor=2d333b)
-![CSS 7%](https://img.shields.io/badge/CSS-7%25-663399?style=for-the-badge&logo=css&logoColor=white&labelColor=2d333b)
-![HTML 3%](https://img.shields.io/badge/HTML5-3%25-E34F26?style=for-the-badge&logo=html5&logoColor=white&labelColor=2d333b)
 
 ![.NET](https://img.shields.io/badge/.NET-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
 ![.NET MAUI](https://img.shields.io/badge/.NET_MAUI-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)

@@ -1,57 +1,16 @@
-"""Rewrite the Tech Stack section of README.md from real data.
+"""Rewrite the Tech Stack section of README.md with detected tools.
 
-Usage: python build_tech_stack.py <cloc-merged.json> <tools.txt> <README.md>
-- cloc-merged.json: language -> lines of code (workflow aggregation)
+Usage: python build_tech_stack.py <merged.json> <tools.txt> <README.md>
+- merged.json: unused (kept for call compatibility)
 - tools.txt: one detected tool key per line (one entry per repo it was
   found in; duplicates rank a tool higher)
 The section between TECH:START and TECH:END markers is replaced.
 """
-import json
 import sys
 from collections import Counter
 
 START, END = "<!-- TECH:START -->", "<!-- TECH:END -->"
-MIN_PCT = 1.0
 MAX_TOOLS = 12
-
-# cloc language name -> (badge label, color, simpleicons logo, logo color)
-LANG_BADGES = {
-    "Python": ("Python", "3776AB", "python", "white"),
-    "JavaScript": ("JavaScript", "F7DF1E", "javascript", "black"),
-    "TypeScript": ("TypeScript", "3178C6", "typescript", "white"),
-    "C#": ("C%23", "512BD4", "dotnet", "white"),
-    "HTML": ("HTML5", "E34F26", "html5", "white"),
-    "CSS": ("CSS", "663399", "css", "white"),
-    "SCSS": ("SCSS", "C6538C", "sass", "white"),
-    "Vue": ("Vue.js", "41B883", "vuedotjs", "white"),
-    "Bourne Shell": ("Shell", "4EAA25", "gnubash", "white"),
-    "Bourne Again Shell": ("Shell", "4EAA25", "gnubash", "white"),
-    "PowerShell": ("PowerShell", "012456", "powershell", "white"),
-    "GDScript": ("GDScript", "478CBF", "godotengine", "white"),
-    "Java": ("Java", "B07219", "openjdk", "white"),
-    "C++": ("C++", "F34B7D", "cplusplus", "white"),
-    "C": ("C", "555555", "c", "white"),
-    "PHP": ("PHP", "4F5D95", "php", "white"),
-    "Go": ("Go", "00ADD8", "go", "white"),
-    "Rust": ("Rust", "DEA584", "rust", "black"),
-    "Lua": ("Lua", "000080", "lua", "white"),
-    "SQL": ("SQL", "E38C00", "mysql", "white"),
-}
-MERGE = {"Bourne Again Shell": "Bourne Shell"}
-# tokei JSON uses enum variant names; normalize them first
-TOKEI_NAMES = {
-    "CSharp": "C#",
-    "Html": "HTML",
-    "Css": "CSS",
-    "Scss": "SCSS",
-    "Sh": "Bourne Shell",
-    "Bash": "Bourne Shell",
-    "GdScript": "GDScript",
-    "Sql": "SQL",
-    "Cpp": "C++",
-    "Php": "PHP",
-    "Tsx": "TypeScript",
-}
 
 TOOL_BADGES = {
     "dotnet": (".NET", "512BD4", "dotnet", "white"),
@@ -86,30 +45,7 @@ def badge(label: str, color: str, logo: str, logo_color: str, alt: str) -> str:
     )
 
 
-def lang_badge(lang: str, pct: float) -> str:
-    label, color, logo, logo_color = LANG_BADGES[lang]
-    return (
-        f"![{lang} {pct:.0f}%](https://img.shields.io/badge/{label}-{pct:.0f}%25"
-        f"-{color}?style=for-the-badge&logo={logo}&logoColor={logo_color}"
-        f"&labelColor=2d333b)"
-    )
-
-
 def main() -> None:
-    raw = json.loads(open(sys.argv[1], encoding="utf-8-sig").read())
-    langs: dict[str, int] = {}
-    for lang, lines in raw.items():
-        lang = TOKEI_NAMES.get(lang, lang)
-        lang = MERGE.get(lang, lang)
-        if lang in LANG_BADGES and lines > 0:
-            langs[lang] = langs.get(lang, 0) + lines
-    total = sum(langs.values()) or 1
-    ranked = [
-        (lang, 100 * n / total)
-        for lang, n in sorted(langs.items(), key=lambda kv: kv[1], reverse=True)
-        if 100 * n / total >= MIN_PCT
-    ]
-
     counts = Counter(
         line.strip()
         for line in open(sys.argv[2], encoding="utf-8-sig")
@@ -118,8 +54,6 @@ def main() -> None:
     tools = [key for key, _ in counts.most_common(MAX_TOOLS)]
 
     lines_md = ["<div align=\"center\">", ""]
-    lines_md.append("\n".join(lang_badge(lang, pct) for lang, pct in ranked))
-    lines_md.append("")
     tool_md = [
         badge(*TOOL_BADGES[k], alt=TOOL_BADGES[k][0].replace("_", " ").replace("--", "-"))
         for k in tools
