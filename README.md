@@ -66,7 +66,7 @@ I enjoy building systems that are not just functional, but technically interesti
 <br><br>
 
 <a href="https://github.com/MartijnW29">
-  <img src="./profile/languages.svg" alt="Bytes written per language (in-depth analysis of all repositories)" />
+  <img src="./profile/languages.svg" alt="Lines of code per language across all repositories" />
 </a>
 
 </div>

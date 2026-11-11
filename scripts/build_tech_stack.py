@@ -120,7 +120,10 @@ def main() -> None:
     lines_md = ["<div align=\"center\">", ""]
     lines_md.append("\n".join(lang_badge(lang, pct) for lang, pct in ranked))
     lines_md.append("")
-    tool_md = [badge(*TOOL_BADGES[k], alt=TOOL_BADGES[k][0].replace("_", " ")) for k in tools]
+    tool_md = [
+        badge(*TOOL_BADGES[k], alt=TOOL_BADGES[k][0].replace("_", " ").replace("--", "-"))
+        for k in tools
+    ]
     tool_md += [badge(*EXTRA_BADGES[k], alt=EXTRA_BADGES[k][0]) for k in ALWAYS_TOOLS]
     lines_md.append("\n".join(tool_md))
     lines_md += ["", "</div>"]
