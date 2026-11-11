@@ -44,6 +44,7 @@ jobs:
   languages:
     runs-on: ubuntu-latest
     needs: cards
+    timeout-minutes: 300
     permissions:
       contents: write
     steps:
@@ -56,49 +57,58 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.METRICS_TOKEN }}
           GIT_TERMINAL_PROMPT: "0"
+          OWN_REPO: ${{ github.event.repository.name }}
         run: |
           set -u
-          mkdir -p /tmp/repos /tmp/cloc
-          : > /tmp/tools.txt
+          mkdir -p /tmp/repos /tmp/cloc /tmp/tools
           gh api "user/repos?affiliation=owner&per_page=100" --paginate \
             --jq '.[] | select(.fork | not) | .full_name' > /tmp/repolist.txt
-          while read -r full; do
+
+          process_repo() {
+            full="$1"
             name="${full#*/}"
             d="/tmp/repos/$name"
-            echo "::group::$name"
-            # blob filter skips files over 200 kB (media, binaries) so big
-            # repos clone fast; a hard timeout keeps one repo from hanging
-            if timeout 300 git clone --depth 1 --filter=blob:limit=200k --quiet \
+            t="/tmp/tools/$name.txt"
+            : > "$t"
+            # blob filter skips files over 1 MB (media, binaries); generous
+            # 30-minute timeout per repo so nothing is skipped needlessly
+            if timeout 1800 git clone --depth 1 --filter=blob:limit=1m --quiet \
                 "https://x-access-token:${GH_TOKEN}@github.com/${full}.git" "$d"; then
               cloc --vcs=git --json --quiet \
                 --exclude-dir=node_modules,vendor,dist,build,out,obj,bin,Debug,Release,venv,.venv,env,__pycache__,packages,wwwroot/lib,migrations,Migrations \
                 "$d" > "/tmp/cloc/$name.json" || true
               jq empty "/tmp/cloc/$name.json" 2>/dev/null || echo '{}' > "/tmp/cloc/$name.json"
               # tool fingerprints (one line per tool per repo)
-              [ -n "$(find "$d" -name project.godot -print -quit)" ] && echo godot >> /tmp/tools.txt
+              [ -n "$(find "$d" -name project.godot -print -quit)" ] && echo godot >> "$t"
               csproj=$(find "$d" -name '*.csproj' -print -quit)
               if [ -n "$csproj" ]; then
-                echo dotnet >> /tmp/tools.txt
-                grep -qi '<UseMaui>true' "$csproj" && echo maui >> /tmp/tools.txt
+                echo dotnet >> "$t"
+                grep -qi '<UseMaui>true' "$csproj" && echo maui >> "$t"
               fi
-              [ -n "$(find "$d" -name package.json -not -path '*/node_modules/*' -print -quit)" ] && echo nodejs >> /tmp/tools.txt
-              [ -n "$(find "$d" -iname 'dockerfile' -o -name 'docker-compose*.yml' | head -1)" ] && echo docker >> /tmp/tools.txt
-              [ -d "$d/.github/workflows" ] && [ "$name" != "${{ github.event.repository.name }}" ] && echo actions >> /tmp/tools.txt
-              [ -n "$(find "$d" -name ProjectVersion.txt -path '*ProjectSettings*' -print -quit)" ] && echo unity >> /tmp/tools.txt
+              [ -n "$(find "$d" -name package.json -not -path '*/node_modules/*' -print -quit)" ] && echo nodejs >> "$t"
+              [ -n "$(find "$d" -iname 'dockerfile' -o -name 'docker-compose*.yml' | head -1)" ] && echo docker >> "$t"
+              [ -d "$d/.github/workflows" ] && [ "$name" != "$OWN_REPO" ] && echo actions >> "$t"
+              [ -n "$(find "$d" -name ProjectVersion.txt -path '*ProjectSettings*' -print -quit)" ] && echo unity >> "$t"
               deps=$(find "$d" \( -name 'requirements*.txt' -o -name pyproject.toml -o -name Pipfile \) -not -path '*/node_modules/*' -exec cat {} + 2>/dev/null)
               pkgs=$(find "$d" -name package.json -not -path '*/node_modules/*' -exec cat {} + 2>/dev/null)
               for kw in django flask torch opencv pandas numpy streamlit selenium scikit-learn discord; do
-                echo "$deps" | grep -qi "$kw" && echo "$kw" >> /tmp/tools.txt
+                echo "$deps" | grep -qi "$kw" && echo "$kw" >> "$t"
               done
               for kw in react express electron discord; do
-                echo "$pkgs" | grep -qi "\"$kw" && echo "$kw" >> /tmp/tools.txt
+                echo "$pkgs" | grep -qi "\"$kw" && echo "$kw" >> "$t"
               done
               rm -rf "$d"
+              echo "done: $name"
             else
-              echo "clone failed or timed out, skipping"
+              echo "clone failed or timed out: $name"
             fi
-            echo "::endgroup::"
-          done < /tmp/repolist.txt
+          }
+          export -f process_repo
+
+          # four repos at a time
+          xargs -a /tmp/repolist.txt -P 4 -I{} bash -c 'process_repo "$@"' _ {}
+
+          cat /tmp/tools/*.txt > /tmp/tools.txt
           jq -s 'map(to_entries | map(select(.key != "header" and .key != "SUM"))
                      | map({(.key): .value.code}) | add // {})
                  | reduce .[] as $m ({}; reduce ($m | to_entries[]) as $e
