@@ -25,6 +25,29 @@ I enjoy building systems that are not just functional, but technically interesti
 > Detected automatically from my repositories — languages with real percentages, tools found in my projects.
 
 <!-- TECH:START -->
+<div align="center">
+
+![JavaScript 58%](https://img.shields.io/badge/JavaScript-58%25-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black&labelColor=2d333b)
+![Python 23%](https://img.shields.io/badge/Python-23%25-3776AB?style=for-the-badge&logo=python&logoColor=white&labelColor=2d333b)
+![C# 9%](https://img.shields.io/badge/C%23-9%25-512BD4?style=for-the-badge&logo=dotnet&logoColor=white&labelColor=2d333b)
+![CSS 7%](https://img.shields.io/badge/CSS-7%25-663399?style=for-the-badge&logo=css&logoColor=white&labelColor=2d333b)
+![HTML 3%](https://img.shields.io/badge/HTML5-3%25-E34F26?style=for-the-badge&logo=html5&logoColor=white&labelColor=2d333b)
+
+![.NET](https://img.shields.io/badge/.NET-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
+![.NET MAUI](https://img.shields.io/badge/.NET_MAUI-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
+![NumPy](https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white)
+![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-5FA04E?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)
+![scikit--learn](https://img.shields.io/badge/scikit--learn-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white)
+![OpenCV](https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)
+![Godot](https://img.shields.io/badge/Godot-478CBF?style=for-the-badge&logo=godotengine&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
+
+</div>
 <!-- TECH:END -->
 
 ## 📊 Stats
