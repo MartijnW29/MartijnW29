@@ -51,13 +51,15 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Install cloc
+        # Pinned release from the official AlDanial/cloc repo, verified by
+        # checksum; avoids apt, whose mirrors are unreliable on runners
         run: |
-          for i in 1 2 3 4 5; do
-            sudo apt-get update -qq && sudo apt-get install -y -qq cloc jq && break
-            echo "apt attempt $i failed, retrying in 30s..."
-            sleep 30
-          done
-          command -v cloc
+          curl -fsSL --retry 5 --retry-delay 10 \
+            -o /usr/local/bin/cloc \
+            https://github.com/AlDanial/cloc/releases/download/v2.06/cloc-2.06.pl
+          echo "ed9fbdd081a2ceb933ea490b3c1cfacc87d3898ae2650d0d6756439695a836c8  /usr/local/bin/cloc" | sha256sum -c -
+          chmod +x /usr/local/bin/cloc
+          cloc --version
 
       - name: Count lines of code and detect tools across all repositories
         env:
