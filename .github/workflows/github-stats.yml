@@ -1,17 +1,17 @@
-name: Update README cards
+name: Update profile stats
 
 on:
   schedule:
-    - cron: "0 0 * * *" # Runs once daily at midnight
+    - cron: "0 3 * * *" # Runs once daily at 03:00 UTC
   workflow_dispatch:
 
 jobs:
-  build:
+  # GitHub stats card + top languages (anuraghazra/github-readme-stats, runs
+  # locally in this workflow so the PAT can see private repos)
+  cards:
     runs-on: ubuntu-latest
-
     permissions:
       contents: write
-
     steps:
       - uses: actions/checkout@v6
 
@@ -19,22 +19,77 @@ jobs:
         uses: readme-tools/github-readme-stats-action@v1
         with:
           card: stats
-          options: username=${{ github.repository_owner }}&count_private=true&show_icons=true&theme=github_dark_dimmed
+          options: username=${{ github.repository_owner }}&count_private=true&include_all_commits=true&show_icons=true&rank_icon=github&theme=github_dark_dimmed&hide_border=true
           path: profile/stats.svg
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.METRICS_TOKEN }}
 
       - name: Generate top languages card
         uses: readme-tools/github-readme-stats-action@v1
         with:
           card: top-langs
-          options: username=${{ github.repository_owner }}&layout=compact&theme=github_dark_dimmed&langs_count=8
+          options: username=${{ github.repository_owner }}&layout=compact&langs_count=8&theme=github_dark_dimmed&hide_border=true
           path: profile/top-langs.svg
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.METRICS_TOKEN }}
 
       - name: Commit cards
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add profile/*.svg
-          git commit -m "Update README cards" || exit 0
+          git commit -m "Update stats cards" || exit 0
+          git push
+
+  # In-depth language analysis (lowlighter/metrics): clones every repo
+  # (private included) and measures real bytes written per language
+  languages:
+    runs-on: ubuntu-latest
+    needs: cards
+    permissions:
+      contents: write
+    steps:
+      - name: Generate languages metrics
+        uses: lowlighter/metrics@v3.34
+        with:
+          token: ${{ secrets.METRICS_TOKEN }}
+          user: ${{ github.repository_owner }}
+          filename: profile/languages.svg
+          base: ""
+          plugin_languages: yes
+          plugin_languages_indepth: yes
+          plugin_languages_sections: most-used
+          plugin_languages_details: bytes-size, percentage
+          plugin_languages_limit: 8
+          plugin_languages_analysis_timeout: 15
+          plugin_languages_colors: github
+          config_timezone: Europe/Amsterdam
+          committer_message: "Update languages metrics"
+
+  # Contribution snake animation (Platane/snk)
+  snake:
+    runs-on: ubuntu-latest
+    needs: languages
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+
+      - name: Generate snake animation
+        uses: Platane/snk/svg-only@v3
+        with:
+          github_user_name: ${{ github.repository_owner }}
+          outputs: |
+            profile/github-snake.svg
+            profile/github-snake-dark.svg?palette=github-dark
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit snake
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git pull --rebase
+          git add profile/github-snake*.svg
+          git commit -m "Update snake animation" || exit 0
           git push
