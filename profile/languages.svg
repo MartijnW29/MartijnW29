@@ -3,8 +3,8 @@
 <text x="30" y="37" font-family="Segoe UI,Ubuntu,sans-serif" font-size="18" font-weight="600" fill="#539bf5">Lines of Code per Language</text>
 <text x="30" y="60" font-family="Segoe UI,Ubuntu,sans-serif" font-size="12" fill="#768390">112.4k lines across all repositories (private included)</text>
 <mask id="bar"><rect x="30" y="74" width="420" height="10" rx="5" fill="#fff"/></mask>
-<rect mask="url(#bar)" x="30.0" y="74" width="244.3" height="10" fill="#f1e05a"/>
-<rect mask="url(#bar)" x="273.3" y="74" width="95.4" height="10" fill="#3572A5"/>
+<rect mask="url(#bar)" x="30.0" y="74" width="244.2" height="10" fill="#f1e05a"/>
+<rect mask="url(#bar)" x="273.2" y="74" width="95.4" height="10" fill="#3572A5"/>
 <rect mask="url(#bar)" x="367.7" y="74" width="37.0" height="10" fill="#7355dd"/>
 <rect mask="url(#bar)" x="403.6" y="74" width="29.5" height="10" fill="#663399"/>
 <rect mask="url(#bar)" x="432.1" y="74" width="14.6" height="10" fill="#e34c26"/>
